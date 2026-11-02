@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Nick Pendland, mechanical engineering student: process engineering, fixture design and Lean manufacturing.">
+<title>Nick Pendland</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: single narrow column, like a work-instruction sheet. Floor-signage condensed headings,
+     one safety-orange accent reserved for the fixture result. */
+  :root {
+    --bg: #F2F4F5;
+    --surface: #FFFFFF;
+    --fg: #1A2027;
+    --muted: #55616D;
+    --line: #D5DADF;
+    --accent: #C93F0A;
+    --on-accent: #FFFFFF;
+    --bar: #66727E;
+    --on-bar: #FFFFFF;
+    --risk-hi: #A8322A; --on-risk-hi: #FFFFFF;
+    --risk-md: #E2B93B; --on-risk-md: #1A2027;
+    --risk-lo: #3E7A55; --on-risk-lo: #FFFFFF;
+    --font-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+    --font-body: "IBM Plex Sans", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #13171B; --surface: #1B2126; --fg: #E8ECEF; --muted: #9BA7B2; --line: #2C353D;
+      --accent: #FF7B3F; --on-accent: #13171B; --bar: #4F5B66; --on-bar: #F4F6F7;
+      --risk-hi: #F0857C; --on-risk-hi: #13171B; --risk-md: #E8C55A; --on-risk-md: #13171B; --risk-lo: #7FC49A; --on-risk-lo: #13171B;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #13171B; --surface: #1B2126; --fg: #E8ECEF; --muted: #9BA7B2; --line: #2C353D;
+    --accent: #FF7B3F; --on-accent: #13171B; --bar: #4F5B66; --on-bar: #F4F6F7;
+    --risk-hi: #F0857C; --on-risk-hi: #13171B; --risk-md: #E8C55A; --on-risk-md: #13171B; --risk-lo: #7FC49A; --on-risk-lo: #13171B;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 48px 40px;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+  a { color: inherit; }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; line-height: 1.05; text-wrap: balance; }
+  h1 { font-size: clamp(52px, 11vw, 88px); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(32px, 6vw, 42px); }
+  h3 { font-size: 22px; font-weight: 600; letter-spacing: 0.01em; }
+  p { margin: 0; max-width: 65ch; }
+
+  /* Hero */
+  .hero { display: flex; flex-direction: column; gap: 20px; }
+  .lead { font-size: 20px; line-height: 1.5; max-width: 40ch; }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 4px 0 0; }
+  .tools li {
+    font-family: var(--font-mono); font-size: 13px;
+    padding: 4px 10px; border: 1px solid var(--line); background: var(--surface);
+  }
+
+  /* Featured project */
+  .feature { display: flex; flex-direction: column; gap: 28px; }
+  .feature-head { display: flex; flex-direction: column; gap: 10px; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .two > div { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+  .result { background: var(--surface); border: 1px solid var(--line); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .result-title { display: flex; flex-direction: column; gap: 4px; }
+  .chart { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .row { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .row-label { font-size: 14px; color: var(--muted); }
+  .row-label strong { color: var(--fg); font-weight: 600; }
+  .track {
+    position: relative; height: 40px;
+    background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+    background-size: 33.3333% 100%;
+    border-right: 1px solid var(--line);
+  }
+  .bar {
+    height: 100%; width: calc(var(--v) / 300 * 100%);
+    background: var(--bar); color: var(--on-bar);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 10px;
+    font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .bar.win { background: var(--accent); color: var(--on-accent); }
+  .axis {
+    display: grid; grid-template-columns: repeat(3, 1fr) auto;
+    font-family: var(--font-mono); font-size: 11px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .axis span:last-child { text-align: right; }
+  .deltas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .delta { display: flex; flex-direction: column; gap: 2px; }
+  .delta b { font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--accent); font-weight: 700; }
+  .delta span { font-size: 14px; color: var(--muted); }
+  .caveat { font-size: 13px; color: var(--muted); }
+
+  .also { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+  .also > div { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 8px 24px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .also h3 { font-size: 20px; }
+  .todo { font-family: var(--font-mono); font-size: 13px; color: var(--muted); border: 1px dashed var(--muted); padding: 1px 8px; display: inline-block; }
+
+  .note { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; max-width: none; }
+
+  /* Projects */
+  .projects { display: flex; flex-direction: column; gap: 28px; }
+  .ns { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: start; }
+  .ns-body { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .ns-body .btn { align-self: flex-start; }
+  .h3-lg { font-size: 30px; font-weight: 700; }
+  .drawing { margin: 0; display: flex; flex-direction: column; gap: 8px; position: sticky; top: 24px; }
+  .drawing a { display: block; background: #FFFFFF; border: 1px solid var(--line); padding: 12px; }
+  .drawing img { display: block; width: 100%; height: auto; }
+  .drawing figcaption { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .stack { display: flex; height: 40px; gap: 2px; }
+  .seg {
+    flex: var(--n) 1 0; min-width: 0; display: flex; align-items: center; padding: 0 10px;
+    font-family: var(--font-mono); font-size: 14px; font-weight: 500; white-space: nowrap;
+  }
+  .seg.hi { background: var(--risk-hi); color: var(--on-risk-hi); }
+  .seg.md { background: var(--risk-md); color: var(--on-risk-md); }
+  .seg.lo { background: var(--risk-lo); color: var(--on-risk-lo); }
+  .findings { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+  .findings b { font-weight: 600; }
+
+  /* Footer */
+  .foot { display: flex; flex-direction: column; gap: 16px; border-top: 2px solid var(--fg); padding-top: 24px; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    font-family: var(--font-mono); font-size: 14px; font-weight: 500; text-decoration: none;
+    padding: 10px 18px; border: 2px solid var(--fg); color: var(--fg); background: transparent;
+  }
+  .btn:hover { background: var(--fg); color: var(--bg); }
+  .btn.primary { background: var(--fg); color: var(--bg); }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+  @media (max-width: 560px) {
+    body { padding-block: 32px 32px; }
+    .wrap { gap: 44px; }
+    .result { padding: 16px; }
+    .also > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  }
+  @media (max-width: 680px) {
+    .ns { grid-template-columns: minmax(0, 1fr); }
+    .drawing { position: static; max-width: 340px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn { transition: background 0.15s, color 0.15s; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Mechanical engineering · Stephen F. Austin State University · May 2027</p>
+    <h1>Nick Pendland</h1>
+    <p class="lead">I design the tools that make assembly lines faster and easier on the people who run them. Process engineering intern at Dresser Utility Solutions, summer 2026.</p>
+    <ul class="tools" aria-label="Tools and methods">
+      <li>Autodesk Inventor</li>
+      <li>Toyota Production System / Lean</li>
+      <li>KiCad</li>
+      <li>AnyLogic</li>
+    </ul>
+  </header>
+
+  <main style="display:contents">
+    <section class="feature" aria-labelledby="dresser-title">
+      <div class="feature-head">
+        <p class="eyebrow">Featured · Dresser Utility Solutions · Low Flow value stream · Summer 2026</p>
+        <h2 id="dresser-title">Operator fixtures for a TPS transformation</h2>
+      </div>
+
+      <div class="two">
+        <div>
+          <h3>The problem</h3>
+          <p>Batch processing caused inconsistent assembly and excess work in progress between stations.</p>
+        </div>
+        <div>
+          <h3>My role</h3>
+          <p>I owned the project from first sketches to the floor: brainstorming, CAD in Autodesk Inventor, drawings, and fixtures in use on the line. The goal was to move operators to one-piece flow and cut waste.</p>
+        </div>
+      </div>
+
+      <figure class="result" style="margin:0" aria-labelledby="chart-title">
+        <div class="result-title">
+          <p class="eyebrow">AMR assembly fixture · trial result</p>
+          <h3 id="chart-title">Cycle time per unit, in seconds</h3>
+        </div>
+        <div class="chart" role="img" aria-label="Bar chart. New operator without fixture: 287.5 seconds. Experienced assembler without fixture: 237.5 seconds. New operator with the AMR fixture: 214.5 seconds.">
+          <div class="row">
+            <div class="row-label"><strong>New operator</strong>, 1 week on the process, no fixture</div>
+            <div class="track"><div class="bar" style="--v:287.5">287.5</div></div>
+          </div>
+          <div class="row">
+            <div class="row-label"><strong>Experienced assembler</strong>, no fixture (control)</div>
+            <div class="track"><div class="bar" style="--v:237.5">237.5</div></div>
+          </div>
+          <div class="row">
+            <div class="row-label"><strong>Same new operator</strong>, with the AMR fixture</div>
+            <div class="track"><div class="bar win" style="--v:214.5">214.5</div></div>
+          </div>
+          <div class="axis" aria-hidden="true"><span>0</span><span>100</span><span>200</span><span>300 s</span></div>
+        </div>
+        <div class="deltas">
+          <div class="delta"><b>25% faster</b><span>New operator, with vs. without the fixture (73 s)</span></div>
+          <div class="delta"><b>10% faster</b><span>New operator with the fixture vs. the experienced assembler without it (23 s)</span></div>
+        </div>
+        <p class="caveat">Single-operator trial on the Low Flow line. The fixture builds the standard method into the tool, so a new operator reaches a veteran's pace faster.</p>
+      </figure>
+
+      <div class="two">
+        <div>
+          <h3>Adopted because operators asked</h3>
+          <p>The line started with one AMR fixture. A new operator learned the process on it. When jobs were shuffled and she was assigned to the same process alongside someone else, she asked for the fixture because of how much easier it made assembly. That request led to a second fixture, and both are now part of the standard station setup.</p>
+        </div>
+        <div>
+          <h3>What I took from it</h3>
+          <p>Design for the operator, not just the part: real constraints on the floor reshape the design. Early mistakes were part of the process, and the best fixes came from attacking the problem from every direction before deploying.</p>
+        </div>
+      </div>
+
+      <div class="also" aria-label="Other fixtures from the project">
+        <div>
+          <h3>D800 Cartridge / Timing Fixture</h3>
+          <p>Guides the operation toward one-piece flow. It standardizes the work instructions and lowers cycle-time variability.</p>
+        </div>
+        <div>
+          <h3>Custom Elbow Socket</h3>
+          <p>Holds a male-to-female corner pipe elbow during attachment, reducing operator effort and cutting the cycle time for that step.</p>
+        </div>
+      </div>
+
+      <p class="note">Design drawings, photos and line data belong to Dresser and are not shown here.</p>
+    </section>
+
+    <section class="projects" aria-labelledby="mine-title">
+      <div class="feature-head">
+        <p class="eyebrow">Beyond the internship</p>
+        <h2 id="mine-title">Things I designed and built</h2>
+      </div>
+
+      <article class="ns" aria-labelledby="ns-title">
+        <figure class="drawing">
+          <a href="nightstand-drawings.pdf" target="_blank" rel="noopener">
+            <img src="nightstand-exploded.png" width="1184" height="1800" loading="lazy"
+                 alt="Exploded assembly drawing of the nightstand: printed frame rails and corner and T connectors around three floor plates, with pegboard side panels.">
+          </a>
+          <figcaption>Exploded assembly, sheet 1 of 9</figcaption>
+        </figure>
+
+        <div class="ns-body">
+          <div class="feature-head">
+            <p class="eyebrow">Personal project · Autodesk Inventor · PLA, FDM</p>
+            <h3 id="ns-title" class="h3-lg">Modular 3D-printed nightstand</h3>
+          </div>
+          <p>A three-floor nightstand built entirely from printed parts: slotted frame rails, corner and T connectors, printed screws and shims, and Skadis pegboard side panels. It stands 10.44 × 10.44 × 29 in. I modeled every part and made a full 9-sheet drawing set.</p>
+          <a class="btn" href="nightstand-drawings.pdf" target="_blank" rel="noopener">All 9 drawing sheets (PDF)</a>
+
+          <div class="result">
+            <div class="result-title">
+              <p class="eyebrow">DFMEA · 16 failure modes · 5 modules</p>
+              <h3 id="risk-title">Risk level, Severity × Probability</h3>
+            </div>
+            <div class="chart" role="img" aria-label="Before controls: 7 high, 9 medium, 0 low. Target after controls: 0 high, 10 medium, 6 low.">
+              <div class="row">
+                <div class="row-label"><strong>Before controls</strong></div>
+                <div class="stack"><span class="seg hi" style="--n:7">7 high</span><span class="seg md" style="--n:9">9 med</span></div>
+              </div>
+              <div class="row">
+                <div class="row-label"><strong>Target after controls</strong></div>
+                <div class="stack"><span class="seg md" style="--n:10">10 med</span><span class="seg lo" style="--n:6">6 low</span></div>
+              </div>
+            </div>
+            <ul class="findings">
+              <li><b>Joint load path.</b> Each screw threads into a shim in the far slot, so every joint's load ends on two 0.065 in lips in the rail. The test is a whole-joint pull-out, not a screw-only test.</li>
+              <li><b>Floor sag.</b> Plate-bending estimate of about 1.9 mm under a uniform 15 lb and 5.4 mm under a center point load. One center rail brings that to about 1 mm.</li>
+              <li><b>Tip-over.</b> A 10.44 in footprint under a 29 in height, with hanging loads on one side, is rated at the top severity in the analysis.</li>
+            </ul>
+            <p class="caveat">The after-control levels are targets until the load tests are run.</p>
+          </div>
+        </div>
+      </article>
+
+      <div class="also">
+        <div>
+          <h3>A.T.L.A.S. senior capstone</h3>
+          <p>RFID smart tool cabinet that tracks inventory and locks with a motorized latch. I model the storage device and the mounting for the electrical hardware in CAD. In progress, team project.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p class="eyebrow">Get in touch</p>
+    <div class="links">
+      <a class="btn primary" href="https://www.linkedin.com/in/nicholas-pendland-b670b1391/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="Resume_Nicholas-Pendland.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
